@@ -1,0 +1,550 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+body.light-theme {
+  background: #f0f0f0;
+  color: #333;
+}
+
+#container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Control Panel */
+#control-panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 280px;
+  max-width: 320px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+body.light-theme #control-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.panel-header h2 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.panel-content {
+  transition: all 0.3s ease;
+}
+
+.panel-content.collapsed {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.control-section {
+  margin-bottom: 20px;
+}
+
+.control-section h3 {
+  font-size: 1em;
+  margin-bottom: 10px;
+  color: #ffd700;
+}
+
+body.light-theme .control-section h3 {
+  color: #ff6b35;
+}
+
+.global-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 70px;
+}
+
+.control-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+}
+
+.planet-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+}
+
+body.light-theme .planet-control {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.planet-name {
+  font-weight: bold;
+  min-width: 80px;
+  font-size: 0.9em;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.speed-slider {
+  flex: 1;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+body.light-theme .speed-slider {
+  background: #ddd;
+}
+
+.speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #ffd700;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.speed-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ffd700;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.speed-value {
+  min-width: 30px;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.camera-controls .control-btn {
+  flex: 1;
+  min-width: 80px;
+  font-size: 0.8em;
+  padding: 6px 8px;
+}
+
+/* Planet Info Panel */
+#planet-info {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 300px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+body.light-theme #planet-info {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+#planet-info.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+#planet-info h3 {
+  color: #ffd700;
+  margin-bottom: 8px;
+}
+
+body.light-theme #planet-info h3 {
+  color: #ff6b35;
+}
+
+#planet-info p {
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* Loading Screen */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 0.5s ease;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 215, 0, 0.3);
+  border-top: 3px solid #ffd700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced Mobile Responsive */
+@media (max-width: 768px) {
+  #control-panel {
+    top: 5px;
+    right: 5px;
+    left: 5px;
+    min-width: auto;
+    max-width: none;
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  .panel-header h2 {
+    font-size: 1em;
+  }
+
+  .global-controls {
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .control-btn {
+    font-size: 0.75em;
+    padding: 5px 8px;
+    min-width: 55px;
+  }
+
+  .planet-control {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .planet-name {
+    min-width: auto;
+    text-align: center;
+    font-size: 0.85em;
+  }
+
+  .speed-control {
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .speed-slider {
+    min-width: 120px;
+  }
+
+  .speed-value {
+    min-width: 35px;
+    font-size: 0.75em;
+  }
+
+  .camera-controls .control-btn {
+    min-width: 65px;
+    font-size: 0.7em;
+  }
+
+  #planet-info {
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    max-width: none;
+    padding: 10px;
+    font-size: 0.85em;
+  }
+}
+
+@media (max-width: 480px) {
+  #control-panel {
+    padding: 6px;
+    font-size: 0.8em;
+  }
+
+  .panel-header h2 {
+    font-size: 0.9em;
+  }
+
+  .control-btn {
+    font-size: 0.7em;
+    padding: 4px 6px;
+    min-width: 45px;
+  }
+
+  .planet-name {
+    font-size: 0.8em;
+  }
+
+  .speed-slider {
+    min-width: 100px;
+    height: 6px;
+  }
+
+  .speed-value {
+    font-size: 0.7em;
+    min-width: 30px;
+  }
+
+  .camera-controls {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .camera-controls .control-btn {
+    min-width: auto;
+    font-size: 0.65em;
+  }
+
+  #planet-info {
+    padding: 8px;
+    font-size: 0.8em;
+  }
+
+  #planet-info h3 {
+    font-size: 0.9em;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  #control-panel {
+    padding: 4px;
+    font-size: 0.75em;
+  }
+
+  .panel-header h2 {
+    font-size: 0.85em;
+  }
+
+  .control-btn {
+    font-size: 0.65em;
+    padding: 3px 5px;
+    min-width: 40px;
+  }
+
+  .planet-control {
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .planet-name {
+    font-size: 0.75em;
+  }
+
+  .speed-slider {
+    min-width: 80px;
+  }
+
+  .speed-value {
+    font-size: 0.65em;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  #control-panel {
+    max-height: 85vh;
+    overflow-y: auto;
+    top: 2px;
+    right: 2px;
+    padding: 5px;
+    font-size: 0.75em;
+  }
+
+  .panel-header h2 {
+    font-size: 0.9em;
+  }
+
+  .control-section {
+    margin-bottom: 8px;
+  }
+
+  .control-section h3 {
+    font-size: 0.85em;
+    margin-bottom: 5px;
+  }
+
+  .planet-control {
+    padding: 4px;
+    margin-bottom: 5px;
+  }
+
+  .control-btn {
+    font-size: 0.7em;
+    padding: 3px 6px;
+  }
+
+  #planet-info {
+    max-height: 25vh;
+    overflow-y: auto;
+    font-size: 0.75em;
+    padding: 6px;
+  }
+}
+
+/* Very wide screens */
+@media (min-width: 1920px) {
+  #control-panel {
+    min-width: 320px;
+    max-width: 380px;
+    padding: 20px;
+  }
+
+  .panel-header h2 {
+    font-size: 1.3em;
+  }
+
+  .control-btn {
+    font-size: 1em;
+    padding: 10px 15px;
+  }
+
+  .planet-name {
+    font-size: 1em;
+  }
+
+  .speed-value {
+    font-size: 0.9em;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .speed-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .speed-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (pointer: coarse) {
+  .control-btn {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+
+  .speed-slider {
+    height: 8px;
+  }
+
+  .speed-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .speed-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .toggle-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

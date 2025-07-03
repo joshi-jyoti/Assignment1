@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System Simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        
+        <!-- Control Panel -->
+        <div id="control-panel">
+            <div class="panel-header">
+                <h2>Solar System Controls</h2>
+                <button id="toggle-panel" class="toggle-btn">▼</button>
+            </div>
+            
+            <div class="panel-content">
+                <!-- Global Controls -->
+                <div class="control-section">
+                    <div class="global-controls">
+                        <button id="pause-btn" class="control-btn">Pause</button>
+                        <button id="reset-btn" class="control-btn">Reset</button>
+                        <button id="theme-toggle" class="control-btn">🌙</button>
+                    </div>
+                </div>
+
+                <!-- Planet Speed Controls -->
+                <div class="control-section">
+                    <h3>Planet Speeds</h3>
+                    <div id="planet-controls"></div>
+                </div>
+
+                <!-- Camera Controls -->
+                <div class="control-section">
+                    <h3>Camera</h3>
+                    <div class="camera-controls">
+                        <button id="zoom-in" class="control-btn">Zoom In</button>
+                        <button id="zoom-out" class="control-btn">Zoom Out</button>
+                        <button id="reset-camera" class="control-btn">Reset View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Planet Info Panel -->
+        <div id="planet-info" class="hidden">
+            <h3 id="planet-name"></h3>
+            <p id="planet-description"></p>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen">
+            <div class="loader"></div>
+            <p>Loading Solar System...</p>
+        </div>
+    </div>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
